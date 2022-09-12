@@ -1,0 +1,147 @@
+.code small
+.stack 100h
+
+
+.data  
+msg1  db "Enter The 1st Number: $"
+msg2  db 0ah,0dh,"Enter The 2nd Number: $"
+msg3  db 0ah,0dh,"Enter The 3rd Number: $"
+msg4  db 0ah,0dh,"Enter The 4th Number: $"
+msg5  db 0ah,0dh,"Enter The 5th Number: $" 
+
+
+ztof  db 0ah,0dh,"The sum is between 0 and 15 $"
+ftot  db 0ah,0dh,"The sum is between 15 and 30 $"
+greatest  db 0ah,0dh,"The sum is greater than or equal to 30 $"
+
+New_line DB 0dh,0ah,'$'
+
+sum  db 0
+
+
+
+main proc 
+    mov ax,@data
+    mov ds,ax 
+    
+    mov ah,9
+    lea dx,msg1
+    int 21h  
+           
+    mov ah,1
+    int 21h
+    sub al, 48 
+    add sum , al
+    
+    
+    mov ah,9
+    lea dx,msg2
+    int 21h  
+           
+    mov ah,1
+    int 21h
+    sub al, 48 
+    add sum , al
+    
+    
+    mov ah,9
+    lea dx,msg3
+    int 21h  
+           
+    mov ah,1
+    int 21h
+    sub al, 48 
+    add sum , al
+    
+    
+    mov ah,9
+    lea dx,msg4
+    int 21h  
+           
+    mov ah,1
+    int 21h
+    sub al, 48 
+    add sum , al
+    
+    mov ah,9
+    lea dx,msg5
+    int 21h  
+           
+    mov ah,1
+    int 21h
+    sub al, 48 
+    add sum , al
+            
+    
+    mov al,sum
+    cmp al,0
+    jge first_con
+    
+    
+    
+    first_con:  
+    
+        mov al,sum
+        cmp al,15
+        jl print_ztof
+        
+        mov al,sum
+        cmp al,15
+        jge sec_con
+        
+        
+        
+        
+        print_ztof: 
+    
+            mov ah,9
+            lea dx,New_line
+            int 21h  
+        
+            mov ah,9
+            lea dx,ztof
+            int 21h
+        
+            jmp exit
+          
+     
+     sec_con:
+        mov al,sum
+        cmp al,30
+        jl print_ftot
+        
+        mov al,sum
+        cmp al,30
+        jge print_greatest
+     
+        print_ftot:
+            mov ah,9
+            lea dx,New_line
+            int 21h  
+        
+            mov ah,9
+            lea dx,ftot
+            int 21h
+        
+            jmp exit
+            
+        print_greatest:
+            mov ah,9
+            lea dx,New_line
+            int 21h  
+        
+            mov ah,9
+            lea dx,greatest
+            int 21h
+        
+            jmp exit    
+     
+     
+        exit:
+ 
+  
+main endp
+end main
+    
+    
+    

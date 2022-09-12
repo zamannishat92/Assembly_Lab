@@ -1,0 +1,800 @@
+                                              TOPIC: MESSAGE PASSING MODEL 
+
+ 
+
+Processes executing concurrently in the operating system may be either independent process or cooperating process. Any process that does not share data with any other process is independent process and Any process that shares data with any other process is cooperating process. Cooperating process requires an interprocess communication (IPC) mechanism that will allow them to exchange data and information. Message passing model is a fundamental model of interprocess communication. 
+
+Message passing provides a mechanism to allow processes to communicate and to synchronize their actions without sharing the same address space and is particularly useful in a distributed environment, where the communicating process may reside on different computers connected by a network. In this system, communication takes place by means of message exchanges between the operating processes. Message Passing is useful for exchanging smaller amounts of data, because no conflicts need be avoided. This is also easier to implement in a distributed system. Let’s take an example of internet chat. Let’s say if I am chatting with my friends over the internet. Now, I am sending message from my system and my friend is receiving message from his/her system that is located somewhere else. Even the systems are two different places and two processes need to communicate connected through a network. In this scenario, message passing system can be used. 
+A message passing facility provides at least two operations: 
+
+Send (message): Send message is an operation to allow the process to send the message to other processes. 
+
+Receive (message): Receiving message is an operation which is a recipient and allow the process to receive message from other processes. 
+
+ 
+
+Message sent by a process can be of either fixed or variable size: 
+
+     1. FIXED SIZE: Fixed size of message means the messages have particular size that will be fixed and the size of message can’t increase. That’s why, system level implementation is very easy and straightforward. But, make the task of programming more difficult. 
+
+     2. VARIABLE SIZE: In this implementation, the size of message should allow to vary. So, the system level implementation is more complex. But programming task becomes simpler. 
+
+ 
+
+If processes P and Q want to communicate, they must send message to and receive message from each other. A communication link must exist between them. This link can be implemented in variety of ways. There are several methods for logically implementing a link and send ()/receive () operations like: 
+
+     1. Direct or Indirect communication. 
+
+     2. Synchronous or Asynchronous communication. 
+
+     3. Automatic or explicit buffering  
+
+There are several issues related with features like: 
+
+      1.Naming 
+
+      2. Synchronization 
+
+      3. Buffering 
+
+ 
+
+NAMING: Processes that want to communicate must have a way to refer to each other. They can use either direct or indirect communication. 
+
+ 
+
+Under Undirect Communication:  
+
+          Each process that wants to communicate must explicitly name the recipient or sender of the communication. 
+
+          1. Send (P, Message) - Send a message to process P. 
+
+          2. Receive (Q, Message) - Receive a message from process Q. 
+
+A communication link in this schema has following properties: 
+
+A link is established automatically between every pair of processes that want to communicate. So, the processes need to know only each other's identity to communicate. 
+
+A link is associated with exactly two processes. 
+
+Between every pair of processes, there exists exactly one link. 
+
+This scheme exhibits symmetry in addressing; that is, both sender process and receiver process must name the other to communicate. 
+
+ 
+
+Another Variant of Direct Communication: 
+
+        Here, the only sender names the recipient, the recipient is not required to name the sender. 
+
+       1. Send (P, Message) - Send a message to process P. 
+
+       2. Receive (Id, Message) - Receive a message from any process, the variable id is set to the name of the process with which communication has taken place. 
+
+         This scheme employs asymmetry in addressing. 
+
+         The Disadvantages in both of these schemes is the limited modularity of the resulting process definitions. Changing the identifier of a process may necessitate examining all other process definitions. 
+
+ 
+
+ 
+
+Indirect Communication: 
+
+        The messages are sent to and received from mailboxes or ports. A mailbox can be viewed abstractly as an object into which message can be placed by processes and from which message can be removed? Each mailbox has a unique identification. Two processes can communicate only if the processes have a shared mailbox. 
+
+         1. Send (A, Message) - Send a message to mailbox A. 
+
+         2. Receive (A, Message) - Receive a message from mailbox A. 
+
+A Communication link in this schema has following properties: 
+
+A link is established between a pair of processes only if both members of the pair have a shared mail box. 
+
+A link may be associated with more than two processes. 
+
+Between each pair of communication processes, there may be a number of different links, with each link corresponding to one mail box. 
+
+ 
+
+A mailbox may be owned either by a process or by the operating system. When a mailbox is owned by a process, there is no confusion who is the owner of the mailbox. The mailbox belongs to that particular process. The problem is that if the process is terminated, then the mailbox will be disappeared. On the other hand, if a mailbox is owned by operating system, then mailbox has an existence of its own and that mailbox is shared later with processes that wants to use it for sending or receiving message. An operating system takes care of creating or deleting mailboxes as required. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+SYNCHRONIZATION: 
+
+        Communication between processes takes place through calls to send () and receive () primitives. There are different design options for implementing each primitive. 
+
+        Message passing may be either blocking or nonblocking also known as synchronous and asynchronous. 
+
+Blocking Send: The sending process is blocked until the message is received by receiving process or by the mailbox. 
+
+Nonblocking Send: The sending process sends the message and resumes operations. 
+
+Blocking Receive: The receiver blocks until a message is available. 
+
+Nonblocking Receive: The receiver retrieves either a valid message or null. 
+
+ 
+
+BUFFERING: 
+
+         Whether communication is direct or indirect, messages exchanged by communicating processes reside in a temporary queue. Basically, such queues can be implemented in three ways. 
+
+Zero Capacity: The queue has a maximum length of zero. Thus, the link can’t have any messages waiting in it. In this case, the sender must block until the recipient receives the message. 
+
+Bounded Capacity: The queue has finite length n. Thus, at most n messages can reside in it. If the queue is not full when a new message is sent, the message is placed in the queue and the sender can continue execution without sharing. The links capacity is finite, however. If the link is full, the sender must block until space is available in the queue. 
+
+Unbounded Capacity: The queue length is potentially infinite. Thus, any number of messages can wait in it. The sender never blocks. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+     2. Synchronous or Asynchronous communication. 
+
+     3. Automatic or explicit buffering  
+
+There are several issues related with features like: 
+
+      1.Naming 
+
+      2. Synchronization 
+
+      3. Buffering 
+
+ 
+
+NAMING: Processes that want to communicate must have a way to refer to each other. They can use either direct or indirect communication. 
+
+ 
+
+Under Undirect Communication:  
+
+          Each process that wants to communicate must explicitly name the recipient or sender of the communication. 
+
+          1. Send (P, Message) - Send a message to process P. 
+
+          2. Receive (Q, Message) - Receive a message from process Q. 
+
+A communication link in this schema has following properties: 
+
+A link is established automatically between every pair of processes that want to communicate. So, the processes need to know only each other's identity to communicate. 
+
+A link is associated with exactly two processes. 
+
+Between every pair of processes, there exists exactly one link. 
+
+This scheme exhibits symmetry in addressing; that is, both sender process and receiver process must name the other to communicate. 
+
+ 
+
+Another Variant of Direct Communication: 
+
+        Here, the only sender names the recipient, the recipient is not required to name the sender. 
+
+       1. Send (P, Message) - Send a message to process P. 
+
+       2. Receive (Id, Message) - Receive a message from any process, the variable id is set to the name of the process with which communication has taken place. 
+
+         This scheme employs asymmetry in addressing. 
+
+         The Disadvantages in both of these schemes is the limited modularity of the resulting process definitions. Changing the identifier of a process may necessitate examining all other process definitions. 
+
+ 
+
+ 
+
+Indirect Communication: 
+
+        The messages are sent to and received from mailboxes or ports. A mailbox can be viewed abstractly as an object into which message can be placed by processes and from which message can be removed? Each mailbox has a unique identification. Two processes can communicate only if the processes have a shared mailbox. 
+
+         1. Send (A, Message) - Send a message to mailbox A. 
+
+         2. Receive (A, Message) - Receive a message from mailbox A. 
+
+A Communication link in this schema has following properties: 
+
+A link is established between a pair of processes only if both members of the pair have a shared mail box. 
+
+A link may be associated with more than two processes. 
+
+Between each pair of communication processes, there may be a number of different links, with each link corresponding to one mail box. 
+
+ 
+
+A mailbox may be owned either by a process or by the operating system. When a mailbox is owned by a process, there is no confusion who is the owner of the mailbox. The mailbox belongs to that particular process. The problem is that if the process is terminated, then the mailbox will be disappeared. On the other hand, if a mailbox is owned by operating system, then mailbox has an existence of its own and that mailbox is shared later with processes that wants to use it for sending or receiving message. An operating system takes care of creating or deleting mailboxes as required. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+SYNCHRONIZATION: 
+
+        Communication between processes takes place through calls to send () and receive () primitives. There are different design options for implementing each primitive. 
+
+        Message passing may be either blocking or nonblocking also known as synchronous and asynchronous. 
+
+Blocking Send: The sending process is blocked until the message is received by receiving process or by the mailbox. 
+
+Nonblocking Send: The sending process sends the message and resumes operations. 
+
+Blocking Receive: The receiver blocks until a message is available. 
+
+Nonblocking Receive: The receiver retrieves either a valid message or null. 
+
+ 
+
+BUFFERING: 
+
+         Whether communication is direct or indirect, messages exchanged by communicating processes reside in a temporary queue. Basically, such queues can be implemented in three ways. 
+
+Zero Capacity: The queue has a maximum length of zero. Thus, the link can’t have any messages waiting in it. In this case, the sender must block until the recipient receives the message. 
+
+Bounded Capacity: The queue has finite length n. Thus, at most n messages can reside in it. If the queue is not full when a new message is sent, the message is placed in the queue and the sender can continue execution without sharing. The links capacity is finite, however. If the link is full, the sender must block until space is available in the queue. 
+
+Unbounded Capacity: The queue length is potentially infinite. Thus, any number of messages can wait in it. The sender never blocks. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+                                              TOPIC: MESSAGE PASSING MODEL 
+
+ 
+
+Processes executing concurrently in the operating system may be either independent process or cooperating process. Any process that does not share data with any other process is independent process and Any process that shares data with any other process is cooperating process. Cooperating process requires an interprocess communication (IPC) mechanism that will allow them to exchange data and information. Message passing model is a fundamental model of interprocess communication. 
+
+Message passing provides a mechanism to allow processes to communicate and to synchronize their actions without sharing the same address space and is particularly useful in a distributed environment, where the communicating process may reside on different computers connected by a network. In this system, communication takes place by means of message exchanges between the operating processes. Message Passing is useful for exchanging smaller amounts of data, because no conflicts need be avoided. This is also easier to implement in a distributed system. Let’s take an example of internet chat. Let’s say if I am chatting with my friends over the internet. Now, I am sending message from my system and my friend is receiving message from his/her system that is located somewhere else. Even the systems are two different places and two processes need to communicate connected through a network. In this scenario, message passing system can be used. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+A message passing facility provides at least two operations: 
+
+Send (message): Send message is an operation to allow the process to send the message to other processes. 
+
+Receive (message): Receiving message is an operation which is a recipient and allow the process to receive message from other processes. 
+
+ 
+
+Message sent by a process can be of either fixed or variable size: 
+
+     1. FIXED SIZE: Fixed size of message means the messages have particular size that will be fixed and the size of message can’t increase. That’s why, system level implementation is very easy and straightforward. But, make the task of programming more difficult. 
+
+     2. VARIABLE SIZE: In this implementation, the size of message should allow to vary. So, the system level implementation is more complex. But programming task becomes simpler. 
+
+ 
+
+If processes P and Q want to communicate, they must send message to and receive message from each other. A communication link must exist between them. This link can be implemented in variety of ways. There are several methods for logically implementing a link and send ()/receive () operations like: 
+
+     1. Direct or Indirect communication. 
+
+     2. Synchronous or Asynchronous communication. 
+
+     3. Automatic or explicit buffering  
+
+There are several issues related with features like: 
+
+      1.Naming 
+
+      2. Synchronization 
+
+      3. Buffering 
+
+ 
+
+NAMING: Processes that want to communicate must have a way to refer to each other. They can use either direct or indirect communication. 
+
+ 
+
+Under Undirect Communication:  
+
+          Each process that wants to communicate must explicitly name the recipient or sender of the communication. 
+
+          1. Send (P, Message) - Send a message to process P. 
+
+          2. Receive (Q, Message) - Receive a message from process Q. 
+
+A communication link in this schema has following properties: 
+
+A link is established automatically between every pair of processes that want to communicate. So, the processes need to know only each other's identity to communicate. 
+
+A link is associated with exactly two processes. 
+
+Between every pair of processes, there exists exactly one link. 
+
+This scheme exhibits symmetry in addressing; that is, both sender process and receiver process must name the other to communicate. 
+
+ 
+
+Another Variant of Direct Communication: 
+
+        Here, the only sender names the recipient, the recipient is not required to name the sender. 
+
+       1. Send (P, Message) - Send a message to process P. 
+
+       2. Receive (Id, Message) - Receive a message from any process, the variable id is set to the name of the process with which communication has taken place. 
+
+         This scheme employs asymmetry in addressing. 
+
+         The Disadvantages in both of these schemes is the limited modularity of the resulting process definitions. Changing the identifier of a process may necessitate examining all other process definitions. 
+
+ 
+
+ 
+
+Indirect Communication: 
+
+        The messages are sent to and received from mailboxes or ports. A mailbox can be viewed abstractly as an object into which message can be placed by processes and from which message can be removed? Each mailbox has a unique identification. Two processes can communicate only if the processes have a shared mailbox. 
+
+         1. Send (A, Message) - Send a message to mailbox A. 
+
+         2. Receive (A, Message) - Receive a message from mailbox A. 
+
+A Communication link in this schema has following properties: 
+
+A link is established between a pair of processes only if both members of the pair have a shared mail box. 
+
+A link may be associated with more than two processes. 
+
+Between each pair of communication processes, there may be a number of different links, with each link corresponding to one mail box. 
+
+ 
+
+A mailbox may be owned either by a process or by the operating system. When a mailbox is owned by a process, there is no confusion who is the owner of the mailbox. The mailbox belongs to that particular process. The problem is that if the process is terminated, then the mailbox will be disappeared. On the other hand, if a mailbox is owned by operating system, then mailbox has an existence of its own and that mailbox is shared later with processes that wants to use it for sending or receiving message. An operating system takes care of creating or deleting mailboxes as required. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+SYNCHRONIZATION: 
+
+        Communication between processes takes place through calls to send () and receive () primitives. There are different design options for implementing each primitive. 
+
+        Message passing may be either blocking or nonblocking also known as synchronous and asynchronous. 
+
+Blocking Send: The sending process is blocked until the message is received by receiving process or by the mailbox. 
+
+Nonblocking Send: The sending process sends the message and resumes operations. 
+
+Blocking Receive: The receiver blocks until a message is available. 
+
+Nonblocking Receive: The receiver retrieves either a valid message or null. 
+
+ 
+
+BUFFERING: 
+
+         Whether communication is direct or indirect, messages exchanged by communicating processes reside in a temporary queue. Basically, such queues can be implemented in three ways. 
+
+Zero Capacity: The queue has a maximum length of zero. Thus, the link can’t have any messages waiting in it. In this case, the sender must block until the recipient receives the message. 
+
+Bounded Capacity: The queue has finite length n. Thus, at most n messages can reside in it. If the queue is not full when a new message is sent, the message is placed in the queue and the sender can continue execution without sharing. The links capacity is finite, however. If the link is full, the sender must block until space is available in the queue. 
+
+Unbounded Capacity: The queue length is potentially infinite. Thus, any number of messages can wait in it. The sender never blocks. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
